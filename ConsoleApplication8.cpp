@@ -6,48 +6,61 @@
 #include <vector>
 #include <algorithm>
 
-typedef long long longer;
+typedef unsigned long long int longer;
 
-longer factor(std::vector < std::pair<int,longer> > * vec, longer & number)
+// Функция эйлера
+longer euler(std::vector < std::pair<int, longer> > * vec, longer & number)
 {
-	for (auto &i:*vec)
-	number*= 1 - 1.00 / i.second;
-	return number;
+	auto temp = long double(number);
+	for (auto &i : *vec)
+		temp *= 1 - 1.00 / i.first;
+	delete vec;
+	return longer(temp);
+
+}
+
+// Факторизация числа
+std::vector < std::pair<int, longer> > * factor(longer & a)
+{
+	auto vec = new std::vector < std::pair<int, longer> >;
+	for (longer i = 2; (i ^ 2) <= a; i++)
+	{
+		// проверяем делитель
+		if (a % i == 0)
+		{
+			// вставляем делитель
+			vec->emplace_back(i, 0);
+			// считаем степени
+			while (a % i == 0)
+			{
+				a /= i;
+				vec->back().second++;
+			}
+		}
+	}
+	if (a > 1)
+	{
+		vec->emplace_back(a, 1);
+
+	}
+	// сортируем вектор
+	std::sort(vec->begin(), vec->end());
+	std::cout << vec->size() << "\n";
+	// выводим вектор
+	for (auto& an : *vec)
+	{
+		std::cout << an.first << ":" << an.second << "\n";
+	}
+	return vec;
 }
 
 int main()
 {
-    std::cout << "Hello World!\n";
-	int n;
-	
-	
-	std::cin >> n;
-	longer def_n = n;
-    std::vector <std::pair<int, longer>> ans;
-	for (longer i = 2; (i^2) <= n; i++) 
-	{
-		// проверяем делитель
-		if (n % i == 0) 
-		{
-			// вставляем делитель
-			ans.emplace_back(0, i);
-			// считаем степени
-			while (n % i == 0) 
-			{
-				n /= i;
-				ans[ans.size() - 1].first--;
-			}
-		}
-	}
-	if (n>1)
-	ans.emplace_back(-1, n);
-	// сортируем вектор
-	sort(ans.begin(), ans.end());
-    std::cout << ans.size() << "\n";
-	// выводим вектор
-	for (auto& an : ans)
-	{
-		std::cout << an.second << ":" << -an.first<<"\n";
-	}
-	std::cout <<  factor(&ans, def_n);
+
+	longer def_n;
+	std::cin >> def_n;
+	auto n = def_n;
+	std::cout << euler(factor(def_n), n);
+
+	return 0;
 }
