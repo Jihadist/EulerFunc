@@ -14,6 +14,11 @@ longer euler(std::vector < std::pair<longer, int> > * vec, longer & number)
 	return longer(temp);
 }
 
+longer euler(longer& number)
+{
+	auto n = number;
+	return euler(factor(number), n);
+}
 
 std::vector < std::pair<longer, int> > * factor(longer & a)
 {

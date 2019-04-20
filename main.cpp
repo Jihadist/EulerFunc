@@ -9,10 +9,8 @@
 int main()
 {
 
-	longer def_n;
-	std::cin >> def_n;
-	auto n = def_n;
-	std::cout << euler(factor(def_n), n);
-
+	longer n;
+	std::cin >> n;
+	std::cout << euler(n) << "\n";
 	return 0;
 }
